@@ -37,6 +37,12 @@ public class ModHelpers {
         throw new AssertionError();
     }
 
+    //Check if Architectury API is installed and its methods can be used.
+    @ExpectPlatform
+    public static boolean fastItemFramesInstalled() {
+        throw new AssertionError();
+    }
+
     public static String getSignRowText(SignBlockEntity sign, int row) {
         StringBuilder builder =  new StringBuilder();
         return sign.getFrontText().getMessage(row, true).getString();
@@ -77,7 +83,7 @@ public class ModHelpers {
 
     @Unique
     public static boolean isClickableBlockAt(BlockPos pos, ClientWorld world) {
-        if (!config.onlycontainers) {
+        if (!ModConfig.get().onlycontainers) {
             return true;
         }
         BlockEntity entity = world.getBlockEntity(pos);

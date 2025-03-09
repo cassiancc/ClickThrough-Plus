@@ -22,4 +22,9 @@ public class ModHelpersImpl {
     public static boolean architecturyInstalled() {
         return FabricLoader.getInstance().isModLoaded("architectury");
     }
+
+    public static boolean fastItemFramesInstalled() {
+        return FabricLoader.getInstance().isModLoaded("fastitemframes");
+    }
+
 }

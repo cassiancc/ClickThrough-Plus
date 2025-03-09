@@ -20,4 +20,7 @@ public class ModHelpersImpl {
         return ModList.get().isLoaded("architectury");
     }
 
+    public static boolean fastItemFramesInstalled() {
+        return ModList.get().isLoaded("fastitemframes");
+    }
 }
