@@ -1,9 +1,10 @@
 package cc.cassian.clickthrough.mixins;
 
-import static cc.cassian.clickthrough.helpers.ModHelpers.config;
 import static cc.cassian.clickthrough.helpers.ModHelpers.isClickableBlockAt;
 
 import cc.cassian.clickthrough.ClickThrough;
+import cc.cassian.clickthrough.compat.FastItemFramesCompat;
+import cc.cassian.clickthrough.config.ModConfig;
 import cc.cassian.clickthrough.helpers.ModHelpers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -46,7 +47,7 @@ public class ItemUseMixin {
 
     @Unique
     private void clickthrough$switchCrosshairTarget() {
-        if (!config.isActive) {
+        if (!ModConfig.get().isActive) {
             return;
         }
         ClickThrough.isDyeOnSign = false;
@@ -75,7 +76,7 @@ public class ItemUseMixin {
 
                     Item item = player.getStackInHand(Hand.MAIN_HAND).getItem();
                     if (item instanceof DyeItem || item == Items.GLOW_INK_SAC) {
-                        if (config.sneaktodye) {
+                        if (ModConfig.get().sneaktodye) {
                             ClickThrough.isDyeOnSign = true;                // prevent sneaking from cancelling the interaction
                             if (!player.isSneaking()) {
                                 this.crosshairTarget = new BlockHitResult(crosshairTarget.getPos(), ((BlockHitResult) crosshairTarget).getSide(), attachedPos, false);
@@ -91,6 +92,12 @@ public class ItemUseMixin {
                     if (ModHelpers.isClickableBlockAt(attachedPos, world)) {
                         this.crosshairTarget = new BlockHitResult(crosshairTarget.getPos(), ((BlockHitResult)crosshairTarget).getSide(), attachedPos, false);
                     }
+                } else if (ModHelpers.fastItemFramesInstalled()) {
+                    HitResult compat = FastItemFramesCompat.passthrough(block, state, blockPos, world, crosshairTarget, player);
+                    if (compat != null) {
+                        this.crosshairTarget = compat;
+                    }
+
                 }
             }
         }
