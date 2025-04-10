@@ -54,7 +54,13 @@ public class ItemUseMixin {
         if (crosshairTarget != null) {
             if (crosshairTarget.getType() == HitResult.Type.ENTITY && ((EntityHitResult) crosshairTarget).getEntity() instanceof ItemFrameEntity itemFrame) {
                 // copied from AbstractDecorationEntity#canStayAttached
-                BlockPos attachedPos = itemFrame.getAttachedBlockPos().offset(itemFrame.getHorizontalFacing().getOpposite());
+                BlockPos attachedPos = itemFrame
+                //? if >1.21 {
+                /*.getAttachedBlockPos()
+                *///?} else {
+                .getDecorationBlockPos()
+                 //?}
+               .offset(itemFrame.getHorizontalFacing().getOpposite());
                 // System.out.println("Item frame attached to "+state.getBlock().getTranslationKey()+" at "+blockPos.toShortString());
                 if (!player.isSneaking() && isClickableBlockAt(attachedPos, world)) {
                     this.crosshairTarget = new BlockHitResult(crosshairTarget.getPos(), itemFrame.getHorizontalFacing(), attachedPos, false);
