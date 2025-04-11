@@ -77,7 +77,7 @@ loom {
 
     forge.convertAccessWideners = true
     forge.mixinConfigs(
-        "item-descriptions.mixins.json"
+        "clickthrough.mixins.json"
     )
 
 

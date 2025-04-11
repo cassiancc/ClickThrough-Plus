@@ -23,7 +23,11 @@ public class ModHelpers {
     //Shorthand for config.
     public static ModConfig config = ModConfig.get();
 
-
+    //Check if a mod is installed and its configuration can be used.
+    @ExpectPlatform
+    public static boolean isLoaded(String mod) {
+        throw new AssertionError();
+    }
 
     //Check if Cloth Config is installed and its configuration can be used.
     @ExpectPlatform
@@ -32,20 +36,24 @@ public class ModHelpers {
     }
 
     //Check if Architectury API is installed and its methods can be used.
-    @ExpectPlatform
     public static boolean architecturyInstalled() {
-        throw new AssertionError();
+        return isLoaded("architectury");
     }
 
-    //Check if Architectury API is installed and its methods can be used.
-    @ExpectPlatform
+    //Check if Fast Item Frames is installed
     public static boolean fastItemFramesInstalled() {
-        throw new AssertionError();
+        return isLoaded("fastitemframes");
     }
 
     public static String getSignRowText(SignBlockEntity sign, int row) {
         StringBuilder builder =  new StringBuilder();
-        return sign.getFrontText().getMessage(row, true).getString();
+        return sign
+            //? if >1.20 {
+            .getFrontText().getMessage(row, true)
+            //?} else {
+            /*.getTextOnRow(row, true)
+             *///?}
+            .getString();
     }
 
 

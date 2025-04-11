@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## Changed
+- Ported buildscript to Stonecutter. Mod functionality should now be more consistent across versions.
+
+## Fixed
+- Configs are now saved when the game is closed, fixing an issue where the config wouldn't be saved when changed via the keybind.
+
 ## [3.3] - 2025-03-09
 
 ## Added

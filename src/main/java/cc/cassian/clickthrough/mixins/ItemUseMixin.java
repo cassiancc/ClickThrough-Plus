@@ -56,10 +56,10 @@ public class ItemUseMixin {
                 // copied from AbstractDecorationEntity#canStayAttached
                 BlockPos attachedPos = itemFrame
                 //? if >1.21 {
-                /*.getAttachedBlockPos()
-                *///?} else {
-                .getDecorationBlockPos()
-                 //?}
+                .getAttachedBlockPos()
+                //?} else {
+                /*.getDecorationBlockPos()
+                 *///?}
                .offset(itemFrame.getHorizontalFacing().getOpposite());
                 // System.out.println("Item frame attached to "+state.getBlock().getTranslationKey()+" at "+blockPos.toShortString());
                 if (!player.isSneaking() && isClickableBlockAt(attachedPos, world)) {

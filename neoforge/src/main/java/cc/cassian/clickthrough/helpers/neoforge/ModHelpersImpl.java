@@ -16,11 +16,7 @@ public class ModHelpersImpl {
                 || stack.isIn(Tags.Items.CHESTS)  || stack.isIn(Tags.Items.BARRELS)
                 || state.isIn(BlockTags.GUARDED_BY_PIGLINS);
     }
-    public static boolean architecturyInstalled() {
-        return ModList.get().isLoaded("architectury");
-    }
-
-    public static boolean fastItemFramesInstalled() {
-        return ModList.get().isLoaded("fastitemframes");
+    public static boolean isLoaded(String mod) {
+        return ModList.get().isLoaded(mod);
     }
 }
