@@ -4,7 +4,6 @@ import fuzs.fastitemframes.world.level.block.ItemFrameBlock;
 import fuzs.fastitemframes.world.level.block.entity.ItemFrameBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.hit.BlockHitResult;
@@ -18,22 +17,17 @@ public class FastItemFramesCompat {
         if (block instanceof ItemFrameBlock) {
             BlockPos attachedPos = blockPos.offset(state.get(ItemFrameBlock.FACING).getOpposite());
             if (!isClickableBlockAt(attachedPos, world)) {
-                return null;
+                return crosshairTarget;
             }
-            BlockEntity entity = world.getBlockEntity(blockPos);
-            if (!(entity instanceof ItemFrameBlockEntity)) {
-                return null;
-            }
-            if (entity instanceof ItemFrameBlockEntity itemFrameBlockEntity) {
-                if (!itemFrameBlockEntity.getItem().isEmpty() && !player.isSneaking()) {
+            if (world.getBlockEntity(blockPos) instanceof ItemFrameBlockEntity itemFrameBlockEntity) {
+                if (itemFrameBlockEntity.getItem().isEmpty() && (!player.getMainHandStack().isEmpty() || !player.getOffHandStack().isEmpty())) {
+                    return crosshairTarget;
+                }
+                if (!player.isSneaking()) {
                     return new BlockHitResult(crosshairTarget.getPos(), ((BlockHitResult)crosshairTarget).getSide(), attachedPos, false);
                 }
-                else {
-                    return null;
-                }
             }
-            else return null;
         }
-        return null;
+        return crosshairTarget;
     }
 }

@@ -42,72 +42,7 @@ public class ItemUseMixin {
     @Inject(method="doItemUse", at=@At(value="INVOKE",
             target="Lnet/minecraft/client/network/ClientPlayerEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;"))
     public void switchCrosshairTargetItemUse(CallbackInfo ci) {
-        this.clickthrough$switchCrosshairTarget();
+        this.crosshairTarget = ModHelpers.switchCrosshairTarget(crosshairTarget, player, world);
     }
-
-    @Unique
-    private void clickthrough$switchCrosshairTarget() {
-        if (!ModConfig.get().isActive) {
-            return;
-        }
-        ClickThrough.isDyeOnSign = false;
-        if (crosshairTarget != null) {
-            if (crosshairTarget.getType() == HitResult.Type.ENTITY && ((EntityHitResult) crosshairTarget).getEntity() instanceof ItemFrameEntity itemFrame) {
-                // copied from AbstractDecorationEntity#canStayAttached
-                BlockPos attachedPos = itemFrame
-                //? if >1.21 {
-                .getAttachedBlockPos()
-                //?} else {
-                /*.getDecorationBlockPos()
-                 *///?}
-               .offset(itemFrame.getHorizontalFacing().getOpposite());
-                // System.out.println("Item frame attached to "+state.getBlock().getTranslationKey()+" at "+blockPos.toShortString());
-                if (!player.isSneaking() && isClickableBlockAt(attachedPos, world)) {
-                    this.crosshairTarget = new BlockHitResult(crosshairTarget.getPos(), itemFrame.getHorizontalFacing(), attachedPos, false);
-                }
-            }
-            else if (crosshairTarget.getType() == HitResult.Type.BLOCK) {
-                BlockPos blockPos = ((BlockHitResult)crosshairTarget).getBlockPos();
-                BlockState state = world.getBlockState(blockPos);
-                Block block = state.getBlock();
-                if (block instanceof WallSignBlock) {
-                    BlockPos attachedPos = blockPos.offset(state.get(WallSignBlock.FACING).getOpposite());
-                    if (!isClickableBlockAt(attachedPos, world)) {
-                        return;
-                    }
-                    BlockEntity entity = world.getBlockEntity(blockPos);
-                    if (!(entity instanceof SignBlockEntity)) {
-                        return;
-                    }
-
-                    Item item = player.getStackInHand(Hand.MAIN_HAND).getItem();
-                    if (item instanceof DyeItem || item == Items.GLOW_INK_SAC) {
-                        if (ModConfig.get().sneaktodye) {
-                            ClickThrough.isDyeOnSign = true;                // prevent sneaking from cancelling the interaction
-                            if (!player.isSneaking()) {
-                                this.crosshairTarget = new BlockHitResult(crosshairTarget.getPos(), ((BlockHitResult) crosshairTarget).getSide(), attachedPos, false);
-                            }
-                        }
-                    } else {
-                        if (!player.isSneaking()) {
-                            this.crosshairTarget = new BlockHitResult(crosshairTarget.getPos(), ((BlockHitResult)crosshairTarget).getSide(), attachedPos, false);
-                        }
-                    }
-                } else if (block instanceof WallBannerBlock) {
-                    BlockPos attachedPos = blockPos.offset(state.get(WallBannerBlock.FACING).getOpposite());
-                    if (ModHelpers.isClickableBlockAt(attachedPos, world)) {
-                        this.crosshairTarget = new BlockHitResult(crosshairTarget.getPos(), ((BlockHitResult)crosshairTarget).getSide(), attachedPos, false);
-                    }
-                } else if (ModHelpers.fastItemFramesInstalled()) {
-                    HitResult compat = FastItemFramesCompat.passthrough(block, state, blockPos, world, crosshairTarget, player);
-                    if (compat != null) {
-                        this.crosshairTarget = compat;
-                    }
-
-                }
-            }
-        }
-    }
-
 
 }

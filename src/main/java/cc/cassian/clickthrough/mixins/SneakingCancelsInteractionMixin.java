@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class SneakingCancelsInteractionMixin {
     @Inject(method="shouldCancelInteraction", at=@At("HEAD"), cancellable = true)
-    private void noCancelWhenDyeing(CallbackInfoReturnable cir) {
+    private void noCancelWhenDyeing(CallbackInfoReturnable<Boolean> cir) {
         if (!ModConfig.get().isActive) {
             return;
         }
