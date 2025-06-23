@@ -5,6 +5,7 @@ import cc.cassian.clickthrough.config.ModConfig;
 import cc.cassian.clickthrough.config.forge.ModConfigFactory;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -15,10 +16,17 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(ClickThrough.MOD_ID)
 public final class ClickthroughForge {
     public ClickthroughForge() {
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // Run our common setup.
         ClickThrough.init();
         registerModsPage();
+        eventBus.addListener(ClickthroughNeoForge::loadComplete);
         MinecraftForge.EVENT_BUS.addListener(ClickthroughForge::saveConfig);
+    }
+
+    @SubscribeEvent
+    public static void loadComplete(FMLClientSetupEvent event) {
+        ModLists.loadLists();
     }
 
     @SubscribeEvent

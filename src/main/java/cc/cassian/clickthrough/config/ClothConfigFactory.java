@@ -5,6 +5,8 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
+import java.util.List;
+
 import static cc.cassian.clickthrough.helpers.ModHelpers.*;
 
 
@@ -24,7 +26,8 @@ public class ClothConfigFactory {
 
 
         for (var field : ModConfig.class.getFields()) {
-            if (field.getType() == boolean.class) {
+            if (field.getName().equals("version")) {}
+            else if (field.getType() == boolean.class) {
                 generalCategory.addEntry(entryBuilder.startBooleanToggle(fieldName(field), fieldGet(configInstance, field))
                         .setSaveConsumer(fieldSetter(configInstance, field))
                         .setDefaultValue((boolean) fieldGet(DEFAULT_VALUES, field)).build());
@@ -39,6 +42,11 @@ public class ClothConfigFactory {
                 generalCategory.addEntry(entryBuilder.startIntField(fieldName(field), fieldGet(configInstance, field))
                         .setSaveConsumer(fieldSetter(configInstance, field))
                         .setDefaultValue((int) fieldGet(DEFAULT_VALUES, field)).build());
+            }
+            else if (field.getType() == List.class) {
+                generalCategory.addEntry(entryBuilder.startStrList(fieldName(field), fieldGet(configInstance, field))
+                        .setSaveConsumer(fieldSetter(configInstance, field))
+                        .setDefaultValue((List<String>) fieldGet(DEFAULT_VALUES, field)).build());
             }
         }
         builder.setSavingRunnable(ModConfig::save);

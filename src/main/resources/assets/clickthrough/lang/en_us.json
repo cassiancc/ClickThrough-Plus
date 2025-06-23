@@ -9,6 +9,7 @@
     "clickthrough.config.onlycontainers": "Only click through to containers",
     "clickthrough.config.switchonattack": "Reroute left button as well",
     "clickthrough.config.isActive": "Enable ClickThrough",
+    "clickthrough.config.containers": "Additional Containers",
 
 
     "clickthrough.config.tt.ignore.1": "Do not click through those signs for the benefit of chest shops",

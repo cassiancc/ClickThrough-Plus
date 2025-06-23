@@ -3,6 +3,7 @@ package cc.cassian.clickthrough.helpers;
 import cc.cassian.clickthrough.ClickThrough;
 import cc.cassian.clickthrough.compat.FastItemFramesCompat;
 import cc.cassian.clickthrough.config.ModConfig;
+import cc.cassian.clickthrough.config.ModLists;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -102,7 +103,7 @@ public class ModHelpers {
         var state = world.getBlockState(pos);
         if (entity instanceof LockableContainerBlockEntity)
             return true;
-        return (ModHelpers.isTaggedAsContainer(state));
+        return ModHelpers.isTaggedAsContainer(state) || ModLists.containers.contains(state.getBlock());
     }
 
     public static HitResult switchCrosshairTarget(HitResult crosshairTarget, ClientPlayerEntity player, ClientWorld world) {

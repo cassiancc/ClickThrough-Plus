@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class ModConfig {
 
@@ -19,10 +20,11 @@ public class ModConfig {
 
     private static ModConfig INSTANCE = new ModConfig();
     //General settings
+    public int version = 0;
     public boolean isActive = true;
     public boolean onlycontainers = true;
     public boolean sneaktodye = false;
-
+    public List<String> containers = List.of("minecraft:ender_chest", "minecraft:vault", "minecraft:composter", "minecraft:respawn_anchor", "minecraft:jukebox", "minecraft:decorated_pot", "minecraft:chiseled_bookshelf", "minecraft:beacon", "minecraft:stonecutter", "minecraft:grindstone", "minecraft:crafting_table");
 
     public static void load() {
         if (!Files.exists(configPath())) {
@@ -43,6 +45,7 @@ public class ModConfig {
         } catch (IOException e) {
             ClickThrough.LOGGER.warn("Unable to save config file!");
         }
+        ModLists.loadLists();
     }
 
     public static ModConfig get() {
