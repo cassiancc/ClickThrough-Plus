@@ -51,6 +51,11 @@ public class ModHelpers {
         return isLoaded("architectury");
     }
 
+    @ExpectPlatform
+    public static void registerKeybind() {
+        throw new AssertionError();
+    }
+
     public static String getSignRowText(SignBlockEntity sign, int row) {
         StringBuilder builder =  new StringBuilder();
         return sign

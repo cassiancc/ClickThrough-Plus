@@ -1,6 +1,12 @@
 package cc.cassian.clickthrough.helpers.fabric;
 
 //? if >1.21 {
+import cc.cassian.clickthrough.config.ModConfig;
+import dev.architectury.event.events.client.ClientTickEvent;
+import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 //?} else {
@@ -16,10 +22,25 @@ import net.minecraft.registry.tag.BlockTags;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 
+import static cc.cassian.clickthrough.ClickThrough.*;
+
 
 public class ModHelpersImpl {
     public static boolean clothConfigInstalled() {
         return FabricLoader.getInstance().isModLoaded("cloth-config");
+    }
+
+    public static void registerKeybind() {
+        KeyBindingHelper.registerKeyBinding(onoff);
+        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
+            while (onoff.wasPressed()) {
+                if (ModConfig.get().isActive) {
+                    setInActive();
+                } else {
+                    setActive();
+                }
+            }
+        });
     }
 
     public static boolean isTaggedAsContainer(BlockState state) {

@@ -10,6 +10,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.GameShuttingDownEvent;
@@ -20,11 +21,13 @@ import static cc.cassian.clickthrough.helpers.ModHelpers.clothConfigInstalled;
 @Mod(ClickThrough.MOD_ID)
 public final class ClickthroughNeoForge {
     public ClickthroughNeoForge(IEventBus eventBus, ModContainer container) {
-        // Run our common setup.
-        ClickThrough.init();
-        registerModsPage();
-        eventBus.addListener(ClickthroughNeoForge::loadComplete);
-        NeoForge.EVENT_BUS.addListener(ClickthroughNeoForge::saveConfig);
+        if (FMLEnvironment.dist.isClient()) {
+            // Run our common setup.
+            ClickThrough.init();
+            registerModsPage();
+            eventBus.addListener(ClickthroughNeoForge::loadComplete);
+            NeoForge.EVENT_BUS.addListener(ClickthroughNeoForge::saveConfig);
+        }
     }
 
     @SubscribeEvent

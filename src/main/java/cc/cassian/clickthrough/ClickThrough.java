@@ -3,6 +3,7 @@ package cc.cassian.clickthrough;
 
 
 import cc.cassian.clickthrough.config.ModConfig;
+import cc.cassian.clickthrough.helpers.ModHelpers;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
@@ -11,26 +12,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.text.Text;
 
-import static cc.cassian.clickthrough.helpers.ModHelpers.architecturyInstalled;
-
 public class ClickThrough
 {
     static public final String MOD_ID = "clickthrough";
     static public final String MOD_NAME = "ClickThrough";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
-
-
     public static void init() {
         ModConfig.load();
-        if (architecturyInstalled()) {
-            ArchitecturyImpl.load();
-            LOGGER.info("Successfully initialized ClickThrough Plus. Signs are now out of the way!");
-        }
-        else {
-            LOGGER.info("ClickThrough Plus running without Architectury. Keybinds are not avaialble.!");
-        }
-
+        ModHelpers.registerKeybind();
     }
 
     static public boolean isDyeOnSign = false;
