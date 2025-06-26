@@ -2,9 +2,11 @@ package cc.cassian.clickthrough.forge;
 
 import cc.cassian.clickthrough.ClickThrough;
 import cc.cassian.clickthrough.config.ModConfig;
+import cc.cassian.clickthrough.config.ModLists;
 import cc.cassian.clickthrough.config.forge.ModConfigFactory;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.event.GameShuttingDownEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,7 +22,7 @@ public final class ClickthroughForge {
         // Run our common setup.
         ClickThrough.init();
         registerModsPage();
-        eventBus.addListener(ClickthroughNeoForge::loadComplete);
+        eventBus.addListener(ClickthroughForge::loadComplete);
         MinecraftForge.EVENT_BUS.addListener(ClickthroughForge::saveConfig);
     }
 

@@ -70,7 +70,7 @@ dependencies {
     modApi("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
 
     // Fast Item Frames
-    if (stonecutter.eval(mcVersion, ">1.20")) {
+    if (stonecutter.eval(mcVersion, ">1.20.1")) {
         modRuntimeOnly("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
         modRuntimeOnly("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
         modRuntimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")

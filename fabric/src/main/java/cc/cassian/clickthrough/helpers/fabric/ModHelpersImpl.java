@@ -1,19 +1,16 @@
 package cc.cassian.clickthrough.helpers.fabric;
 
 //? if >1.21 {
-import cc.cassian.clickthrough.config.ModConfig;
-import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 //?} else {
 /*import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
  *///?}
-
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import cc.cassian.clickthrough.config.ModConfig;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 //? if >1.20 {
 import net.minecraft.registry.tag.BlockTags;
 //?} else {
