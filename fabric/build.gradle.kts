@@ -9,7 +9,7 @@ plugins {
 
 val loader = prop("loom.platform")!!
 val minecraft: String = stonecutter.current.version
-val common: Project = requireNotNull(stonecutter.node.sibling("")) {
+val common: Project = requireNotNull(stonecutter.node.sibling("")?.project) {
     "No common project for $project"
 }
 
@@ -60,21 +60,27 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${common.mod.dep("fabric_api")}")
 
-    // Cloth Config
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
+    if (stonecutter.eval(mcVersion, "<1.21.8")) {
+        // Cloth Config
+        modApi("me.shedaniel.cloth:cloth-config-fabric:${common.mod.dep("cloth_version")}")
 
-    // Architectury API
-    modImplementation("dev.architectury:architectury-fabric:${common.mod.dep("architectury")}")
+        // Architectury API
+        modImplementation("dev.architectury:architectury-fabric:${common.mod.dep("architectury")}")
+
+        // Mod Menu
+        modRuntimeOnly("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
+
+        // Fast Item Frames
+        if (stonecutter.eval(mcVersion, ">1.20.1")) {
+            modRuntimeOnly("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
+            modRuntimeOnly("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
+            modRuntimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
+        }
+    }
+
 
     // Mod Menu
-    modApi("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
-
-    // Fast Item Frames
-    if (stonecutter.eval(mcVersion, ">1.20.1")) {
-        modRuntimeOnly("maven.modrinth:fast-item-frames:${common.mod.dep("fast_item_frames")}")
-        modRuntimeOnly("maven.modrinth:puzzles-lib:${common.mod.dep("puzzles_lib")}")
-        modRuntimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${common.mod.dep("forge_config_api_port")}")
-    }
+    modCompileOnly("com.terraformersmc:modmenu:${common.mod.dep("modmenu_version")}")
 
     // Stonecutter/Arch
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }

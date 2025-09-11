@@ -13,7 +13,7 @@ base {
 
 architectury.common(stonecutter.tree.branches.mapNotNull {
     if (stonecutter.current.project !in it) null
-    else it.prop("loom.platform")
+    else it.project.prop("loom.platform")
 })
 
 repositories {
@@ -34,6 +34,7 @@ dependencies {
     modApi("dev.architectury:architectury-fabric:${mod.dep("architectury")}")
 
     modCompileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api")}")
 
 }
 

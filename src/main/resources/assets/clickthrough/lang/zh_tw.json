@@ -13,11 +13,13 @@
     "clickthrough.config.tt.ignore.4": "不會穿過指定的告示牌，以便於使用箱子商店",
     "clickthrough.config.tt.onlycontainers": "點擊穿過儲物箱、木桶等，但不會穿過工作台、堆肥桶等類似方塊",
     "clickthrough.config.tt.switchonattack": "Also redirect left button clicks to what's behind the sign",
-    "key.categories.clickthrough": "ClickThrough",
-    "key.clickthrough.toggle": "Turn ClickThrough on/off",
-    "clickthrough.msg.active": "ClickThrough active",
-    "clickthrough.msg.inactive": "ClickThrough inactive",
+    "key.category.clickthrough.keybinds": "ClickThrough Plus",
+    "key.clickthrough.toggle": "Turn ClickThrough Plus on/off",
+    "clickthrough.msg.active": "ClickThrough Plus active",
+    "clickthrough.msg.inactive": "ClickThrough Plus inactive",
     "clickthrough.config.switchonattack.never": "Never",
     "clickthrough.config.switchonattack.first": "First click",
-    "clickthrough.config.switchonattack.always": "Always"
+    "clickthrough.config.switchonattack.always": "Always",
+    "clickthrough.config.isActive": "Enable ClickThrough",
+    "clickthrough.config.containers": "Additional Containers"
 }

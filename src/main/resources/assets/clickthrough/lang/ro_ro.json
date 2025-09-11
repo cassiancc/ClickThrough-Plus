@@ -13,11 +13,13 @@
     "clickthrough.config.tt.ignore.4": "Nu da click prin aceste semne pentru beneficiul magazinelor de tip cufăr",
     "clickthrough.config.tt.onlycontainers": "Click through to chests, barrels etc., but not crafting tables, composters and similar",
     "clickthrough.config.tt.switchonattack": "Also redirect left button clicks to what's behind the sign",
-    "key.categories.clickthrough": "ClickThrough",
-    "key.clickthrough.toggle": "Turn ClickThrough on/off",
-    "clickthrough.msg.active": "ClickThrough active",
-    "clickthrough.msg.inactive": "ClickThrough inactive",
+    "key.category.clickthrough.keybinds": "ClickThrough Plus",
+    "key.clickthrough.toggle": "Turn ClickThrough Plus on/off",
+    "clickthrough.msg.active": "ClickThrough Plus active",
+    "clickthrough.msg.inactive": "ClickThrough Plus inactive",
     "clickthrough.config.switchonattack.never": "Never",
     "clickthrough.config.switchonattack.first": "First click",
-    "clickthrough.config.switchonattack.always": "Always"
+    "clickthrough.config.switchonattack.always": "Always",
+    "clickthrough.config.isActive": "Enable ClickThrough",
+    "clickthrough.config.containers": "Additional Containers"
 }

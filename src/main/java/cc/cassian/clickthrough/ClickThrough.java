@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.text.Text;
@@ -30,7 +31,11 @@ public class ClickThrough
             "key.clickthrough.toggle", // The translation key of the name shown in the Controls screen
             InputUtil.Type.KEYSYM, // This key mapping is for Keyboards by default
             InputUtil.GLFW_KEY_F9, // The default keycode
-            "key.categories.clickthrough" // The category translation key used to categorize in the Controls screen
+            //? if >1.21.8 {
+            /*new KeyBinding.Category(Identifier.of("clickthrough", "keybinds")) // The category translation key used to categorize in the Controls screen
+            *///?} else {
+            "key.category.clickthrough.keybinds"
+            //?}
     );
 
 
