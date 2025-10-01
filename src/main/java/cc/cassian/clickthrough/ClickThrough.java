@@ -19,6 +19,12 @@ public class ClickThrough
     static public final String MOD_NAME = "ClickThrough";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
+    //? if >1.21.8 {
+    public static final KeyBinding.Category CATEGORY = new KeyBinding.Category(Identifier.of("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
+    //?} else {
+    /*public static final String CATEGORY = "key.category.clickthrough.keybinds";
+     *///?}
+
     public static void init() {
         ModConfig.load();
         ModHelpers.registerKeybind();
@@ -31,14 +37,8 @@ public class ClickThrough
             "key.clickthrough.toggle", // The translation key of the name shown in the Controls screen
             InputUtil.Type.KEYSYM, // This key mapping is for Keyboards by default
             InputUtil.GLFW_KEY_F9, // The default keycode
-            //? if >1.21.8 {
-            /*new KeyBinding.Category(Identifier.of("clickthrough", "keybinds")) // The category translation key used to categorize in the Controls screen
-            *///?} else {
-            "key.category.clickthrough.keybinds"
-            //?}
+            CATEGORY
     );
-
-
 
     public static void setActive() {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;

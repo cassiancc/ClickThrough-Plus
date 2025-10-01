@@ -21,23 +21,11 @@ import static cc.cassian.clickthrough.helpers.ModHelpers.clothConfigInstalled;
 @Mod(ClickThrough.MOD_ID)
 public final class ClickthroughNeoForge {
     public ClickthroughNeoForge(IEventBus eventBus, ModContainer container) {
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             // Run our common setup.
             ClickThrough.init();
             registerModsPage();
-            eventBus.addListener(ClickthroughNeoForge::loadComplete);
-            NeoForge.EVENT_BUS.addListener(ClickthroughNeoForge::saveConfig);
         }
-    }
-
-    @SubscribeEvent
-    public static void loadComplete(FMLClientSetupEvent event) {
-        ModLists.loadLists();
-    }
-
-    @SubscribeEvent
-    public static void saveConfig(GameShuttingDownEvent event) {
-        ModConfig.save();
     }
 
     //Integrate Cloth Config screen (if mod present) with NeoForge mod menu.

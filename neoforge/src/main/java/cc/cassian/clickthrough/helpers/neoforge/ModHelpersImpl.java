@@ -1,12 +1,9 @@
 package cc.cassian.clickthrough.helpers.neoforge;
 
-import cc.cassian.clickthrough.ArchitecturyImpl;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.tag.BlockTags;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.Tags;
-
-import static cc.cassian.clickthrough.ClickThrough.*;
 
 public class ModHelpersImpl {
     public static boolean clothConfigInstalled() {
@@ -14,11 +11,7 @@ public class ModHelpersImpl {
     }
 
     public static void registerKeybind() {
-        if (isLoaded("architectury")) {
-            ArchitecturyImpl.load();
-        } else {
-            LOGGER.info("ClickThrough Plus running without Architectury. Keybinds are not avaialble!");
-        }
+
     }
 
     public static boolean isTaggedAsContainer(BlockState state) {

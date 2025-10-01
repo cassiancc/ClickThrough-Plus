@@ -31,7 +31,6 @@ dependencies {
         implementation(it)
     }
     modApi("me.shedaniel.cloth:cloth-config-fabric:${mod.dep("cloth_version")}")
-    modApi("dev.architectury:architectury-fabric:${mod.dep("architectury")}")
 
     modCompileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api")}")

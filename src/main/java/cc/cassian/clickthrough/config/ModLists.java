@@ -26,10 +26,10 @@ public class ModLists {
         for (String compassItem : ModConfig.get().containers) {
             Optional<Block> item = registry.
             //? if >1.21.2 {
-            /*getOptionalValue
-            *///?} else {
-            getOrEmpty
-             //?}
+            getOptionalValue
+            //?} else {
+            /*getOrEmpty
+             *///?}
             (Identifier.tryParse(compassItem));
             item.ifPresent(value -> containers.add(value));
         }

@@ -46,11 +46,6 @@ public class ModHelpers {
         throw new AssertionError();
     }
 
-    //Check if Architectury API is installed and its methods can be used.
-    public static boolean architecturyInstalled() {
-        return isLoaded("architectury");
-    }
-
     @ExpectPlatform
     public static void registerKeybind() {
         throw new AssertionError();
