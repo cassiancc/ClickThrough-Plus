@@ -20,7 +20,7 @@ public class ClickThrough
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
     //? if >1.21.8 {
-    public static final KeyBinding.Category CATEGORY = new KeyBinding.Category(Identifier.of("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
+    public static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
     //?} else {
     /*public static final String CATEGORY = "key.category.clickthrough.keybinds";
      *///?}
