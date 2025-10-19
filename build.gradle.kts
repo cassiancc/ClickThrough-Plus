@@ -24,7 +24,11 @@ repositories {
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
-    mappings("net.fabricmc:yarn:$minecraft+build.${mod.dep("yarn_build")}:v2")
+    mappings(loom.layered {
+        officialMojangMappings()
+        if (hasProperty("deps.parchment"))
+            parchment("org.parchmentmc.data:parchment-${property("deps.parchment")}@zip")
+    })
     modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
     "io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras")}".let {
         annotationProcessor(it)

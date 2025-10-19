@@ -1,17 +1,16 @@
 package cc.cassian.clickthrough;
 
-
-
 import cc.cassian.clickthrough.config.ModConfig;
 import cc.cassian.clickthrough.helpers.ModHelpers;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.text.Text;
 
 public class ClickThrough
 {
@@ -20,7 +19,7 @@ public class ClickThrough
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
     //? if >1.21.8 {
-    public static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
+    public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
     //?} else {
     /*public static final String CATEGORY = "key.category.clickthrough.keybinds";
      *///?}
@@ -33,25 +32,25 @@ public class ClickThrough
     static public boolean isDyeOnSign = false;
 
     // A key mapping with keyboard as the default
-    public static final KeyBinding onoff = new KeyBinding(
+    public static final KeyMapping onoff = new KeyMapping(
             "key.clickthrough.toggle", // The translation key of the name shown in the Controls screen
-            InputUtil.Type.KEYSYM, // This key mapping is for Keyboards by default
-            InputUtil.GLFW_KEY_F9, // The default keycode
+            InputConstants.Type.KEYSYM, // This key mapping is for Keyboards by default
+            InputConstants.KEY_F9, // The default keycode
             CATEGORY
     );
 
     public static void setActive() {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            player.sendMessage(Text.translatable("clickthrough.msg.active"), false);
+            player.displayClientMessage(Component.translatable("clickthrough.msg.active"), false);
         }
         ModConfig.get().isActive = true;
     }
 
     public static void setInActive() {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            player.sendMessage(Text.translatable("clickthrough.msg.inactive"), false);
+            player.displayClientMessage(Component.translatable("clickthrough.msg.inactive"), false);
         }
         ModConfig.get().isActive = false;
     }

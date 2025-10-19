@@ -5,25 +5,25 @@ import cc.cassian.clickthrough.compat.FastItemFramesCompat;
 import cc.cassian.clickthrough.config.ModConfig;
 import cc.cassian.clickthrough.config.ModLists;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.WallBannerBlock;
-import net.minecraft.block.WallSignBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.decoration.ItemFrameEntity;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WallBannerBlock;
+import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.spongepowered.asm.mixin.Unique;
 
 import java.lang.reflect.Field;
@@ -64,8 +64,8 @@ public class ModHelpers {
 
 
     //Automatically generate translation keys for config options.
-    public static Text fieldName(Field field) {
-        return Text.translatable("clickthrough.config." + field.getName());
+    public static Component fieldName(Field field) {
+        return Component.translatable("clickthrough.config." + field.getName());
     }
 
 
@@ -95,35 +95,35 @@ public class ModHelpers {
         throw new AssertionError();
     }
 
-    public static boolean isClickableBlockAt(BlockPos pos, ClientWorld world) {
+    public static boolean isClickableBlockAt(BlockPos pos, ClientLevel world) {
         if (!ModConfig.get().onlycontainers) {
             return true;
         }
         BlockEntity entity = world.getBlockEntity(pos);
         var state = world.getBlockState(pos);
-        if (entity instanceof LockableContainerBlockEntity)
+        if (entity instanceof BaseContainerBlockEntity)
             return true;
         return ModHelpers.isTaggedAsContainer(state) || ModLists.containers.contains(state.getBlock());
     }
 
-    public static HitResult switchCrosshairTarget(HitResult crosshairTarget, ClientPlayerEntity player, ClientWorld world) {
+    public static HitResult switchCrosshairTarget(HitResult crosshairTarget, LocalPlayer player, ClientLevel world) {
         if (!ModConfig.get().isActive) {
             return crosshairTarget;
         }
         ClickThrough.isDyeOnSign = false;
         if (crosshairTarget != null) {
-            if (crosshairTarget.getType() == HitResult.Type.ENTITY && ((EntityHitResult) crosshairTarget).getEntity() instanceof ItemFrameEntity itemFrame) {
+            if (crosshairTarget.getType() == HitResult.Type.ENTITY && ((EntityHitResult) crosshairTarget).getEntity() instanceof ItemFrame itemFrame) {
                 // copied from AbstractDecorationEntity#canStayAttached
                 BlockPos attachedPos = itemFrame
                         //? if >1.21 {
-                        .getAttachedBlockPos()
+                        .getPos()
                         //?} else {
                         /*.getDecorationBlockPos()
                          *///?}
-                        .offset(itemFrame.getHorizontalFacing().getOpposite());
+                        .offset(itemFrame.getDirection().getUnitVec3i());
                 // System.out.println("Item frame attached to "+state.getBlock().getTranslationKey()+" at "+blockPos.toShortString());
-                if (!player.isSneaking() && isClickableBlockAt(attachedPos, world)) {
-                    return new BlockHitResult(crosshairTarget.getPos(), itemFrame.getHorizontalFacing(), attachedPos, false);
+                if (!player.isShiftKeyDown() && isClickableBlockAt(attachedPos, world)) {
+                    return new BlockHitResult(crosshairTarget.getLocation(), itemFrame.getDirection(), attachedPos, false);
                 }
             }
             else if (crosshairTarget instanceof BlockHitResult blockHitResult) {
@@ -131,7 +131,7 @@ public class ModHelpers {
                 BlockState state = world.getBlockState(blockPos);
                 Block block = state.getBlock();
                 if (block instanceof WallSignBlock) {
-                    BlockPos attachedPos = blockPos.offset(state.get(WallSignBlock.FACING).getOpposite());
+                    BlockPos attachedPos = blockPos.offset(state.getValue(WallSignBlock.FACING).getUnitVec3i());
                     if (!isClickableBlockAt(attachedPos, world)) {
                         return crosshairTarget;
                     }
@@ -140,23 +140,23 @@ public class ModHelpers {
                         return crosshairTarget;
                     }
 
-                    Item item = player.getStackInHand(Hand.MAIN_HAND).getItem();
+                    Item item = player.getItemInHand(InteractionHand.MAIN_HAND).getItem();
                     if (item instanceof DyeItem || item == Items.GLOW_INK_SAC) {
                         if (ModConfig.get().sneaktodye) {
                             ClickThrough.isDyeOnSign = true;                // prevent sneaking from cancelling the interaction
-                            if (!player.isSneaking()) {
-                                return new BlockHitResult(crosshairTarget.getPos(), blockHitResult.getSide(), attachedPos, false);
+                            if (!player.isShiftKeyDown()) {
+                                return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
                             }
                         }
                     } else {
-                        if (!player.isSneaking()) {
-                            return new BlockHitResult(crosshairTarget.getPos(), blockHitResult.getSide(), attachedPos, false);
+                        if (!player.isShiftKeyDown()) {
+                            return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
                         }
                     }
                 } else if (block instanceof WallBannerBlock) {
-                    BlockPos attachedPos = blockPos.offset(state.get(WallBannerBlock.FACING).getOpposite());
+                    BlockPos attachedPos = blockPos.offset(state.getValue(WallBannerBlock.FACING).getUnitVec3i());
                     if (ModHelpers.isClickableBlockAt(attachedPos, world)) {
-                        return new BlockHitResult(crosshairTarget.getPos(), blockHitResult.getSide(), attachedPos, false);
+                        return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
                     }
                 } else if (ModHelpers.isLoaded("fastitemframes")) {
                     return FastItemFramesCompat.passthrough(block, state, blockPos, world, crosshairTarget, player);

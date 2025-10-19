@@ -2,8 +2,8 @@ package cc.cassian.clickthrough.config;
 
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ public class ClothConfigFactory {
     public static Screen create(Screen parent) {
         final var builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.translatable("key.categories.clickthrough"));
+                .setTitle(Component.translatable("key.category.clickthrough.keybinds"));
 
         final var entryBuilder = builder.entryBuilder();
         final var configInstance = ModConfig.get();
-        final var generalCategory = builder.getOrCreateCategory(Text.translatable("key.categories.clickthrough"));
+        final var generalCategory = builder.getOrCreateCategory(Component.translatable("key.category.clickthrough.keybinds"));
 
 
 

@@ -3,7 +3,8 @@ package cc.cassian.clickthrough.config.fabric;
 
 import cc.cassian.clickthrough.config.ClothConfigFactory;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
+
 
 public class ModConfigFactory implements ConfigScreenFactory<Screen> {
 

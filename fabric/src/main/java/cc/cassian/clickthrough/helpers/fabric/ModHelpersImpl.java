@@ -11,13 +11,10 @@ import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import cc.cassian.clickthrough.config.ModConfig;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-//? if >1.20 {
-import net.minecraft.registry.tag.BlockTags;
-//?} else {
-/*import net.minecraft.tag.BlockTags;
-*///?}
+import net.minecraft.tags.BlockTags;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
+
 
 import static cc.cassian.clickthrough.ClickThrough.*;
 
@@ -30,7 +27,7 @@ public class ModHelpersImpl {
     public static void registerKeybind() {
         KeyBindingHelper.registerKeyBinding(onoff);
         ClientTickEvents.END_CLIENT_TICK.register(minecraft -> {
-            while (onoff.wasPressed()) {
+            while (onoff.isDown()) {
                 if (ModConfig.get().isActive) {
                     setInActive();
                 } else {
@@ -41,13 +38,13 @@ public class ModHelpersImpl {
     }
 
     public static boolean isTaggedAsContainer(BlockState state) {
-        var stack = state.getBlock().asItem().getDefaultStack();
-        return state.isIn(ConventionalBlockTags.CHESTS) || state.isIn(BlockTags.GUARDED_BY_PIGLINS)
+        var stack = state.getBlock().asItem().getDefaultInstance();
+        return state.is(ConventionalBlockTags.CHESTS) || state.is(BlockTags.GUARDED_BY_PIGLINS)
         //? if >1.20 {
-         || stack.isIn(ConventionalItemTags.CHESTS)
+         || stack.is(ConventionalItemTags.CHESTS)
          //?}
         //? if >1.21 {
-        || state.isIn(ConventionalBlockTags.BARRELS)  || stack.isIn(ConventionalItemTags.BARRELS)
+        || state.is(ConventionalBlockTags.BARRELS)  || stack.is(ConventionalItemTags.BARRELS)
         //?}
         ;
     }
