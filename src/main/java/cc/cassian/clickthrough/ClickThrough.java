@@ -17,6 +17,7 @@ public class ClickThrough
     static public final String MOD_ID = "clickthrough";
     static public final String MOD_NAME = "ClickThrough";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
+    public static final ModConfig CONFIG = ModConfig.createToml(Platform.INSTANCE.configPath(), "", ClickThrough.MOD_ID, ModConfig.class);
 
     //? if >1.21.8 {
     public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
@@ -25,8 +26,7 @@ public class ClickThrough
      *///?}
 
     public static void init() {
-        ModConfig.load();
-        ModHelpers.registerKeybind();
+
     }
 
     static public boolean isDyeOnSign = false;
@@ -44,7 +44,7 @@ public class ClickThrough
         if (player != null) {
             player.displayClientMessage(Component.translatable("clickthrough.msg.active"), false);
         }
-        ModConfig.get().isActive = true;
+        CONFIG.isActive = true;
     }
 
     public static void setInActive() {
@@ -52,7 +52,7 @@ public class ClickThrough
         if (player != null) {
             player.displayClientMessage(Component.translatable("clickthrough.msg.inactive"), false);
         }
-        ModConfig.get().isActive = false;
+        CONFIG.isActive = false;
     }
 
 

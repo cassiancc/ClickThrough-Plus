@@ -9,12 +9,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static cc.cassian.clickthrough.ClickThrough.CONFIG;
+
 @Mixin(Player.class)
 
 public class SneakingCancelsInteractionMixin {
     @Inject(method="isSecondaryUseActive", at=@At("HEAD"), cancellable = true)
     private void noCancelWhenDyeing(CallbackInfoReturnable<Boolean> cir) {
-        if (!ModConfig.get().isActive) {
+        if (!CONFIG.isActive) {
             return;
         }
         if (((Object) this) instanceof LocalPlayer) {

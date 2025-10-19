@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+- Mod configuration is now handled via Kaleido Config and McQoy.
+
+## [3.5.3] - 2025-10-18
+
+### Fixed
+- Crash from leftover debugging mixin.
+
+## [3.5.2] - 2025-10-14
+
+### Fixed
+- Keybind category sorting
+
+## [3.5.1] - 2025-06-26
+
+### Fixed
+- Crash on startup in Fabric 1.21+
+
+## [3.5.0] - 2025-06-26
+
 ### Added
 - Config option to add additional containers to be clicked to.
 

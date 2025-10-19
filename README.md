@@ -13,8 +13,7 @@ You can still rotate items in item frames or edit signs by sneaking and clicking
 
 ClickThrough Plus is a completely clientside mod for Fabric and NeoForge, as well as Forge (1.18-1.20.6) and Quilt (where QSL is available)
 - On Fabric, [Fabric API](https://modrinth.com/mod/fabric-api) is required.
-- On Forge and NeoForge, [Architectury API](https://modrinth.com/mod/architectury-api) is required.
-- Mod settings are available with [Mod Menu](https://modrinth.com/mod/mod-menu) (only required on Fabric) and [Cloth Config](https://modrinth.com/mod/cloth-config).
+- Mod settings are available with [McQoy](https://modrinth.com/mod/mcqoy). Versions below 3.5.4 require [Cloth Config](https://modrinth.com/mod/cloth-config).
 
 ## Mod Compatibility + Config Options
 

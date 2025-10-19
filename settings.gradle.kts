@@ -1,29 +1,31 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         mavenCentral()
         gradlePluginPortal()
-        maven("https://maven.fabricmc.net/")
-        maven("https://maven.architectury.dev")
-        maven("https://maven.minecraftforge.net")
-        maven("https://maven.neoforged.net/releases/")
-        maven("https://maven.kikugie.dev/snapshots")
+        maven("https://maven.fabricmc.net/") { name = "Fabric" }
+        maven("https://maven.neoforged.net/releases/") { name = "NeoForged" }
+        maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie" }
+        maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
+        maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
+        maven("https://maven.su5ed.dev/releases" ) {name = "Sinytra"}
     }
 }
 
 plugins {
-    id("dev.kikugie.stonecutter") version "0.6"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
+    id("dev.kikugie.stonecutter") version "0.7.10"
 }
 
 stonecutter {
-    centralScript = "build.gradle.kts"
-    kotlinController = true
     create(rootProject) {
-        // Root `src/` functions as the 'common' project
-        versions("1.21.9")
-        branch("fabric") // Copies versions from root
-//        branch("forge") { versions("1.19.2", "1.20.1") }
-        branch("neoforge") { versions("1.21.9") }
+        fun match(version: String, vararg loaders: String) = loaders
+            .forEach { version("$version-$it", version).buildscript = "build.$it.gradle.kts" }
+
+        match("1.20.1", "fabric")
+        match("1.21.1", "fabric", "neoforge")
+        match("1.21.10", "fabric", "neoforge")
+
+        vcsVersion = "1.21.1-fabric"
     }
 }
-
-rootProject.name = "ClickThrough Plus"

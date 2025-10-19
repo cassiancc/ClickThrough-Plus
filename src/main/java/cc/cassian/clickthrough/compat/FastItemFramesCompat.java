@@ -1,5 +1,6 @@
 package cc.cassian.clickthrough.compat;
 
+import cc.cassian.clickthrough.helpers.ModHelpers;
 import fuzs.fastitemframes.world.level.block.ItemFrameBlock;
 import fuzs.fastitemframes.world.level.block.entity.ItemFrameBlockEntity;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -15,7 +16,7 @@ import static cc.cassian.clickthrough.helpers.ModHelpers.isClickableBlockAt;
 public class FastItemFramesCompat {
     public static HitResult passthrough(Block block, BlockState state, BlockPos blockPos, ClientLevel world, HitResult crosshairTarget, LocalPlayer player) {
         if (block instanceof ItemFrameBlock) {
-            BlockPos attachedPos = blockPos.offset(state.getValue(ItemFrameBlock.FACING).getUnitVec3i());
+            BlockPos attachedPos = blockPos.offset(ModHelpers.getOpposite(state.getValue(ItemFrameBlock.FACING)));
             if (!isClickableBlockAt(attachedPos, world)) {
                 return crosshairTarget;
             }

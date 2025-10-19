@@ -1,6 +1,7 @@
 package cc.cassian.clickthrough.config;
 
 //? if >1.20 {
+import cc.cassian.clickthrough.ClickThrough;
 import net.minecraft.core.registries.BuiltInRegistries;
 //?} else {
 /*import net.minecraft.util.registry.Registry;
@@ -22,14 +23,8 @@ public class ModLists {
         /*var registry = Registry.BLOCK;
          *///?}
         containers = new ArrayList<>();
-        for (String compassItem : ModConfig.get().containers) {
-            Optional<Block> item = registry.
-            //? if >1.21.2 {
-            getOptional
-            //?} else {
-            /*getOrEmpty
-             *///?}
-            (ResourceLocation.tryParse(compassItem));
+        for (String compassItem : ClickThrough.CONFIG.containers) {
+            Optional<Block> item = registry.getOptional(ResourceLocation.tryParse(compassItem));
             item.ifPresent(value -> containers.add(value));
         }
     }

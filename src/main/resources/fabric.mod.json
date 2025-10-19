@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "clickthrough",
+  "version": "${version}",
+  "name": "ClickThrough Plus",
+  "description": "Click through Signs and Item Frames to Chests and other containers - a port of ClickThrough to Architectury.",
+  "authors": [
+    "cassiancc"
+  ],
+  "contributors": [
+    "Giselbaer"
+  ],
+  "contact": {
+  "homepage": "https://modrinth.com/mod/clickthrough+",
+  "sources": "https://github.com/cassiancc/ClickThrough-Plus",
+  "issues": "https://github.com/cassiancc/ClickThrough-Plus/issues"
+},
+  "license": "MIT",
+  "icon": "assets/clickthrough/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "cc.cassian.clickthrough.fabric.ClickthroughFabric"
+    ]
+  },
+  "mixins": [
+    "clickthrough.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.2",
+    "minecraft": "${minecraft}",
+    "fabric-api": "*"
+  },
+  "recommends": {
+    "mcqoy": "*"
+  }
+}

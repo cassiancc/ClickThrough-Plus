@@ -1,14 +1,28 @@
 package cc.cassian.clickthrough.helpers;
 
 import cc.cassian.clickthrough.ClickThrough;
+import cc.cassian.clickthrough.Platform;
 import cc.cassian.clickthrough.compat.FastItemFramesCompat;
-import cc.cassian.clickthrough.config.ModConfig;
 import cc.cassian.clickthrough.config.ModLists;
-import dev.architectury.injectables.annotations.ExpectPlatform;
+//? if fabric && >1.21 {
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
+//?} else if fabric && <1.21 {
+/*import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+*///?} else if neoforge {
+
+/*import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.neoforged.neoforge.common.Tags;
+*///?} else if forge {
+//?}
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.item.DyeItem;
@@ -24,31 +38,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.spongepowered.asm.mixin.Unique;
 
-import java.lang.reflect.Field;
-import java.util.function.Consumer;
+import static cc.cassian.clickthrough.ClickThrough.*;
 
 
 public class ModHelpers {
-    //Shorthand for config.
-    public static ModConfig config = ModConfig.get();
 
-    //Check if a mod is installed and its configuration can be used.
-    @ExpectPlatform
-    public static boolean isLoaded(String mod) {
-        throw new AssertionError();
-    }
-
-    //Check if Cloth Config is installed and its configuration can be used.
-    @ExpectPlatform
-    public static boolean clothConfigInstalled() {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static void registerKeybind() {
-        throw new AssertionError();
+    public static void handleKeybind(Minecraft minecraft) {
+        while (onoff.isDown()) {
+            if (CONFIG.isActive) {
+                setInActive();
+            } else {
+                setActive();
+            }
+        }
     }
 
     public static String getSignRowText(SignBlockEntity sign, int row) {
@@ -62,41 +65,26 @@ public class ModHelpers {
             .getString();
     }
 
-
-    //Automatically generate translation keys for config options.
-    public static Component fieldName(Field field) {
-        return Component.translatable("clickthrough.config." + field.getName());
-    }
-
-
-    //Get the current value of a config field.
-    @SuppressWarnings("unchecked")
-    public static <T> T fieldGet(Object instance, Field field) {
-        try {
-            return (T) field.get(instance);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //Set a config field.
-    public static <T> Consumer<T> fieldSetter(Object instance, Field field) {
-        return t -> {
-            try {
-                field.set(instance, t);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
-
-    @ExpectPlatform
     public static boolean isTaggedAsContainer(BlockState state) {
-        throw new AssertionError();
+        var stack = state.getBlock().asItem().getDefaultInstance();
+        //? if fabric {
+        return state.is(ConventionalBlockTags.CHESTS) || state.is(BlockTags.GUARDED_BY_PIGLINS)
+                //? if >1.20 {
+                || stack.is(ConventionalItemTags.CHESTS)
+                //?}
+                //? if >1.21 {
+                || state.is(ConventionalBlockTags.BARRELS)  || stack.is(ConventionalItemTags.BARRELS)
+                //?}
+                ;
+        //?} else {
+        /*return state.is(Tags.Blocks.CHESTS) || state.is(Tags.Blocks.BARRELS)
+                || stack.is(Tags.Items.CHESTS)  || stack.is(Tags.Items.BARRELS)
+                || state.is(BlockTags.GUARDED_BY_PIGLINS);
+        *///?}
     }
 
     public static boolean isClickableBlockAt(BlockPos pos, ClientLevel world) {
-        if (!ModConfig.get().onlycontainers) {
+        if (!CONFIG.onlycontainers) {
             return true;
         }
         BlockEntity entity = world.getBlockEntity(pos);
@@ -107,7 +95,7 @@ public class ModHelpers {
     }
 
     public static HitResult switchCrosshairTarget(HitResult crosshairTarget, LocalPlayer player, ClientLevel world) {
-        if (!ModConfig.get().isActive) {
+        if (!CONFIG.isActive) {
             return crosshairTarget;
         }
         ClickThrough.isDyeOnSign = false;
@@ -118,9 +106,9 @@ public class ModHelpers {
                         //? if >1.21 {
                         .getPos()
                         //?} else {
-                        /*.getDecorationBlockPos()
+                        /*.getOnPos()
                          *///?}
-                        .offset(itemFrame.getDirection().getUnitVec3i());
+                        .offset(getOpposite(itemFrame.getDirection()));
                 // System.out.println("Item frame attached to "+state.getBlock().getTranslationKey()+" at "+blockPos.toShortString());
                 if (!player.isShiftKeyDown() && isClickableBlockAt(attachedPos, world)) {
                     return new BlockHitResult(crosshairTarget.getLocation(), itemFrame.getDirection(), attachedPos, false);
@@ -131,7 +119,7 @@ public class ModHelpers {
                 BlockState state = world.getBlockState(blockPos);
                 Block block = state.getBlock();
                 if (block instanceof WallSignBlock) {
-                    BlockPos attachedPos = blockPos.offset(state.getValue(WallSignBlock.FACING).getUnitVec3i());
+                    BlockPos attachedPos = blockPos.offset(getOpposite(state.getValue(WallSignBlock.FACING)));
                     if (!isClickableBlockAt(attachedPos, world)) {
                         return crosshairTarget;
                     }
@@ -142,7 +130,7 @@ public class ModHelpers {
 
                     Item item = player.getItemInHand(InteractionHand.MAIN_HAND).getItem();
                     if (item instanceof DyeItem || item == Items.GLOW_INK_SAC) {
-                        if (ModConfig.get().sneaktodye) {
+                        if (CONFIG.sneaktodye) {
                             ClickThrough.isDyeOnSign = true;                // prevent sneaking from cancelling the interaction
                             if (!player.isShiftKeyDown()) {
                                 return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
@@ -154,15 +142,25 @@ public class ModHelpers {
                         }
                     }
                 } else if (block instanceof WallBannerBlock) {
-                    BlockPos attachedPos = blockPos.offset(state.getValue(WallBannerBlock.FACING).getUnitVec3i());
+                    BlockPos attachedPos = blockPos.offset(getOpposite(state.getValue(WallBannerBlock.FACING)));
                     if (ModHelpers.isClickableBlockAt(attachedPos, world)) {
                         return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
                     }
-                } else if (ModHelpers.isLoaded("fastitemframes")) {
+                } else if (Platform.INSTANCE.isLoaded("fastitemframes")) {
                     return FastItemFramesCompat.passthrough(block, state, blockPos, world, crosshairTarget, player);
                 }
             }
         }
         return crosshairTarget;
+    }
+
+    public static Vec3i getOpposite(Direction direction) {
+        return direction.getOpposite().
+                //? if >1.21.2 {
+                getUnitVec3i()
+                //?} else {
+                /*getNormal()
+                 *///?}
+        ;
     }
 }
