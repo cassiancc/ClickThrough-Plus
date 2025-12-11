@@ -18,14 +18,14 @@ modURL="https://modrinth.com/mod/clickthrough+"
 [[dependencies.clickthrough]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.0,)"
+versionRange = "[21.9,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.clickthrough]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[1.21.9,)"
 ordering = "NONE"
 side = "CLIENT"
 
