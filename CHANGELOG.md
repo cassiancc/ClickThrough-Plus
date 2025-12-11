@@ -7,9 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Changed
-- Mod configuration is now handled via Kaleido Config and McQoy.
-
 ## [3.5.3] - 2025-10-18
 
 ### Fixed

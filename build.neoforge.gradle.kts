@@ -31,30 +31,41 @@ jsonlang {
 
 
 repositories {
-    mavenLocal()
-    maven ( "https://maven.minecraftforge.net" ) {
-        name = "Minecraft Forge"
-    }
-    maven ( "https://maven.shedaniel.me/" ) {
+    maven {
         name = "shedaniel (Cloth Config)"
+        url = uri("https://maven.shedaniel.me/")
+        content {
+            includeGroupAndSubgroups("me.shedaniel")
+        }
     }
-    maven ( "https://api.modrinth.com/maven") {
+    maven {
+        name = "Terraformers (Mod Menu)"
+        url = uri("https://maven.terraformersmc.com/releases/")
+        content {
+            includeGroupAndSubgroups("com.terraformersmc")
+        }
+    }
+    maven {
         name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
+        content {
+            includeGroupAndSubgroups("maven.modrinth")
+        }
     }
-    maven ( "https://maven2.bai.lol" ) {
-        name = "WTHIT"
-    }
-    maven ( "https://repo.sleeping.town/" ) {
+    maven {
         name = "Sisby Maven"
+        url = uri("https://repo.sleeping.town/")
+        content {
+            includeGroupAndSubgroups("folk.sisby")
+        }
     }
-    maven ( "https://maven.parchmentmc.org" ) {
-        name = "Parchment Mappings"
-    }
-    maven ( "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") {
+    maven {
         name = "Fuzs Mod Resources"
+        url = uri("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+        content {
+            includeGroupAndSubgroups("fuzs")
+        }
     }
-
-    maven ( "https://cursemaven.com" )
 }
 
 neoForge {
@@ -106,8 +117,6 @@ dependencies {
 
     implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
     jarJar("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-    "additionalRuntimeClasspath"("folk.sisby:kaleido-config:${property("deps.kaleido")}")
-
 
     // Cloth Config
     if (hasProperty("deps.cloth_version")) {
@@ -115,20 +124,20 @@ dependencies {
     } else {
         compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
     }
-    // Jade
-    if (hasProperty("deps.jade")) {
-        runtimeOnly("maven.modrinth:jade:${property("deps.jade")}")
-    }
-    compileOnly("maven.modrinth:jade:19.3.1+neoforge")
 
     // Fast Item Frames
     if (stonecutter.eval(mcVersion, ">1.20.1")) {
-        implementation("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
-        implementation("maven.modrinth:puzzles-lib:${mod.dep("puzzles_lib")}")
-        runtimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-neoforge:${mod.dep("forge_config_api_port")}")
+        compileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
+        compileOnly("maven.modrinth:puzzles-lib:${mod.dep("puzzles_lib")}")
+//        runtimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-neoforge:${mod.dep("forge_config_api_port")}")
     }
+}
 
-
+stonecutter {
+    replacements.string {
+        direction = eval(current.version, ">1.21.10")
+        replace("ResourceLocation", "Identifier")
+    }
 }
 
 java {

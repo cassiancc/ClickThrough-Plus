@@ -14,8 +14,7 @@ import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 
 /*import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.neoforged.neoforge.common.Tags;
-*///?} else if forge {
-//?}
+*///?}
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.client.Minecraft;

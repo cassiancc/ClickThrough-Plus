@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("fabric-loom")
+    id("net.fabricmc.fabric-loom-remap")
     id("dev.kikugie.postprocess.jsonlang")
     id("me.modmuss50.mod-publish-plugin")
     id("maven-publish")
@@ -41,45 +41,41 @@ jsonlang {
 }
 
 repositories {
-    mavenLocal()
-    maven ( "https://maven.minecraftforge.net" ) {
-        name = "Minecraft Forge"
-    }
-    maven ( "https://maven.shedaniel.me/" ) {
+    maven {
         name = "shedaniel (Cloth Config)"
+        url = uri("https://maven.shedaniel.me/")
+        content {
+            includeGroupAndSubgroups("me.shedaniel")
+        }
     }
-    maven ( "https://maven.terraformersmc.com/releases/" ) {
+    maven {
         name = "Terraformers (Mod Menu)"
+        url = uri("https://maven.terraformersmc.com/releases/")
+        content {
+            includeGroupAndSubgroups("com.terraformersmc")
+        }
     }
-    maven ( "https://maven.wispforest.io/releases/" ) {
-        name = "Wisp Forest Maven"
-    }
-    maven ( "https://api.modrinth.com/maven") {
+    maven {
         name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
+        content {
+            includeGroupAndSubgroups("maven.modrinth")
+        }
     }
-    maven ( "https://maven2.bai.lol" ) {
-        name = "WTHIT"
-    }
-    maven ( "https://repo.sleeping.town/" ) {
+    maven {
         name = "Sisby Maven"
+        url = uri("https://repo.sleeping.town/")
+        content {
+            includeGroupAndSubgroups("folk.sisby")
+        }
     }
-    maven ( "https://maven.parchmentmc.org" ) {
-        name = "Parchment Mappings"
-    }
-    maven ( "https://maven.isxander.dev/releases") {
-        name = "Xander Maven"
-    }
-    maven ( "https://maven.nucleoid.xyz" ) {
-        name = "Nucleoid Maven (Polymer)"
-    }
-    maven ( "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") {
+    maven {
         name = "Fuzs Mod Resources"
+        url = uri("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
+        content {
+            includeGroupAndSubgroups("fuzs")
+        }
     }
-
-    maven("https://mvn.devos.one/releases/" )
-    maven("https://mvn.devos.one/snapshots/" )
-    maven("https://maven.jamieswhiteshirt.com/libs-release")
-    maven("https://maven.ladysnake.org/releases")
 }
 
 dependencies {
@@ -119,20 +115,18 @@ dependencies {
     else {
         modCompileOnly("com.terraformersmc:modmenu:15.0.0-beta.3")
     }
-
-    // Jade
-    if (hasProperty("deps.jade")) {
-        modCompileOnly("maven.modrinth:jade:${property("deps.jade")}")
-        modLocalRuntime("maven.modrinth:jade:${property("deps.jade")}")
-    } else {
-        modCompileOnly("maven.modrinth:jade:19.3.2+fabric")
-    }
-
 }
 
 configurations.all {
     resolutionStrategy {
         force("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
+    }
+}
+
+stonecutter {
+    replacements.string {
+        direction = eval(current.version, ">1.21.10")
+        replace("ResourceLocation", "Identifier")
     }
 }
 

@@ -9,8 +9,6 @@ import java.nio.file.Path;
 //? neoforge {
 /*import cc.cassian.clickthrough.neoforge.NeoForgePlatformImpl;
 *///?}
-//? forge
-/*import cc.cassian.clickthrough.forge.ForgePlatformImpl;*/
 
 public interface Platform {
 
@@ -20,9 +18,6 @@ public interface Platform {
     //? neoforge {
     /*Platform INSTANCE = new NeoForgePlatformImpl();
     *///?}
-    //? forge {
-    /*Platform INSTANCE = new ForgePlatformImpl();
-     *///?}
 
 
     boolean isLoaded(String modid);
