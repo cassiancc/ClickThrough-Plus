@@ -2,7 +2,6 @@ package cc.cassian.clickthrough.helpers;
 
 import cc.cassian.clickthrough.ClickThrough;
 import cc.cassian.clickthrough.Platform;
-import cc.cassian.clickthrough.compat.FastItemFramesCompat;
 import cc.cassian.clickthrough.config.ModLists;
 //? if fabric && >1.21 {
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -145,8 +144,6 @@ public class ModHelpers {
                     if (ModHelpers.isClickableBlockAt(attachedPos, world)) {
                         return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
                     }
-                } else if (Platform.INSTANCE.isLoaded("fastitemframes")) {
-                    return FastItemFramesCompat.passthrough(block, state, blockPos, world, crosshairTarget, player);
                 }
             }
         }

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [3.6.0]
+
+### Changed
+- Mod configuration is now handled via Kaleido Config and McQoy. Current targets are 1.21.10 and 1.21.11.
+
 ## [3.5.3] - 2025-10-18
 
 ### Fixed

@@ -7,7 +7,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +20,7 @@ public class ClickThrough
     public static final ModConfig CONFIG = ModConfig.createToml(Platform.INSTANCE.configPath(), "", ClickThrough.MOD_ID, ModConfig.class);
 
     //? if >1.21.8 {
-    public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(ResourceLocation.fromNamespaceAndPath("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
+    public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
     //?} else {
     /*public static final String CATEGORY = "key.category.clickthrough.keybinds";
      *///?}

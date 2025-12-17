@@ -6,7 +6,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 //?} else {
 /*import net.minecraft.util.registry.Registry;
  *///?}
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class ModLists {
          *///?}
         containers = new ArrayList<>();
         for (String compassItem : ClickThrough.CONFIG.containers) {
-            Optional<Block> item = registry.getOptional(ResourceLocation.tryParse(compassItem));
+            Optional<Block> item = registry.getOptional(Identifier.tryParse(compassItem));
             item.ifPresent(value -> containers.add(value));
         }
     }

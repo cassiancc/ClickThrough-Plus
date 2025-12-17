@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("net.fabricmc.fabric-loom-remap")
+    id("net.fabricmc.fabric-loom")
     id("dev.kikugie.postprocess.jsonlang")
     id("me.modmuss50.mod-publish-plugin")
     id("maven-publish")
@@ -41,6 +41,10 @@ jsonlang {
 }
 
 repositories {
+    mavenLocal()
+    maven ( "https://maven.minecraftforge.net" ) {
+        name = "Minecraft Forge"
+    }
     maven {
         name = "shedaniel (Cloth Config)"
         url = uri("https://maven.shedaniel.me/")
@@ -63,10 +67,26 @@ repositories {
         }
     }
     maven {
+        name = "WTHIT"
+        url = uri("https://maven2.bai.lol")
+        content {
+            includeGroupAndSubgroups("mcp.mobius.waila")
+            includeGroupAndSubgroups("lol.bai")
+        }
+    }
+    maven {
         name = "Sisby Maven"
         url = uri("https://repo.sleeping.town/")
         content {
             includeGroupAndSubgroups("folk.sisby")
+        }
+    }
+    maven {
+        name = "Xander Maven"
+        url = uri("https://maven.isxander.dev/releases")
+        content {
+            includeGroupAndSubgroups("dev.isxander")
+            includeGroupAndSubgroups("org.quiltmc.parsers")
         }
     }
     maven {
@@ -80,43 +100,15 @@ repositories {
 
 dependencies {
     minecraft("com.mojang:minecraft:${property("deps.minecraft")}")
-    mappings(loom.layered {
-        officialMojangMappings()
-        if (hasProperty("deps.parchment"))
-            parchment("org.parchmentmc.data:parchment-${property("deps.parchment")}@zip")
-        if (hasProperty("deps.mojbackward"))
-            mappings("dev.lambdaurora:yalmm-mojbackward:${property("deps.minecraft")}+build.${property("deps.mojbackward")}")
-    })
+    implementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
+    implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
 
     implementation("folk.sisby:kaleido-config:${property("deps.kaleido")}")
     include("folk.sisby:kaleido-config:${property("deps.kaleido")}")
 
-    // Fast Item Frames
-    if (hasProperty("deps.fast_item_frames")) {
-        modCompileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
-        modRuntimeOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
-        modRuntimeOnly("maven.modrinth:puzzles-lib:${mod.dep("puzzles_lib")}")
-        modRuntimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${mod.dep("forge_config_api_port")}")
-    } else {
-        modCompileOnly("maven.modrinth:fast-item-frames:GVMdKuJR")
-    }
+    compileOnly("me.shedaniel.cloth:cloth-config-neoforge:19.0.147")
 
-    modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
-
-    // Cloth Config
-    if (hasProperty("deps.cloth_version")) {
-        modApi("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
-    } else {
-        modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:19.0.147")
-    }
-    // Mod Menu
-    if (hasProperty("deps.modmenu_version"))
-        modApi("com.terraformersmc:modmenu:${property("deps.modmenu_version")}")
-    else {
-        modCompileOnly("com.terraformersmc:modmenu:15.0.0-beta.3")
-    }
 }
 
 configurations.all {
@@ -139,21 +131,20 @@ tasks {
 
     register<Copy>("buildAndCollect") {
         group = "build"
-        from(remapJar.map { it.archiveFile })
+        from(jar.map { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
         dependsOn("build")
     }
 }
 
+loom.runs.named("server") {
+    isIdeConfigGenerated = false
+}
+
 java {
     withSourcesJar()
-    val javaCompat = if (stonecutter.eval(stonecutter.current.version, ">=1.21")) {
-        JavaVersion.VERSION_21
-    } else {
-        JavaVersion.VERSION_17
-    }
-    sourceCompatibility = javaCompat
-    targetCompatibility = javaCompat
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 val additionalVersionsStr = findProperty("publish.additionalVersions") as String?
@@ -164,8 +155,8 @@ val additionalVersions: List<String> = additionalVersionsStr
     ?: emptyList()
 
 publishMods {
-    file = tasks.remapJar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.remapSourcesJar.map { it.archiveFile.get() })
+    file = tasks.jar.map { it.archiveFile.get() }
+    additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
 
     // one of BETA, ALPHA, STABLE
     type = STABLE
@@ -177,10 +168,12 @@ publishMods {
     modrinth {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
-        minecraftVersions.add(stonecutter.current.version)
+        minecraftVersions.add(property("deps.minecraft").toString())
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
-        optional("mcqoy")
+        optional("cloth-config")
+        optional("jade")
+        optional("modmenu")
     }
 
     curseforge {
