@@ -1,6 +1,5 @@
-### Added
-- Support for 26.1-snapshot-1
+### Changed
+- Active state is now displayed in the title bar. This can be reverted in the config.
 
-### Removed
-- Fast Item Frames compatibility, as that mod now includes its own Clickthrough mechanic.
-- Support for 1.21.10 NeoForge.
+### Fixed
+- Active state is no longer switched repeatedly when the toggle button is held.

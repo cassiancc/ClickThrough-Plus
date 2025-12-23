@@ -2,6 +2,9 @@ package cc.cassian.clickthrough.helpers;
 
 import cc.cassian.clickthrough.ClickThrough;
 import cc.cassian.clickthrough.Platform;
+//? if <1.21.11 {
+import cc.cassian.clickthrough.compat.FastItemFramesCompat;
+//?}
 import cc.cassian.clickthrough.config.ModLists;
 //? if fabric && >1.21 {
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -10,7 +13,6 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 /*import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
 *///?} else if neoforge {
-
 /*import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.neoforged.neoforge.common.Tags;
 *///?}
@@ -42,13 +44,15 @@ import static cc.cassian.clickthrough.ClickThrough.*;
 
 public class ModHelpers {
 
+    static boolean hasBeenToggled = false;
     public static void handleKeybind(Minecraft minecraft) {
-        while (onoff.isDown()) {
-            if (CONFIG.isActive) {
-                setInActive();
-            } else {
-                setActive();
+        if (onoff.isDown()) {
+            if (!hasBeenToggled) {
+				setActive(!CONFIG.isActive);
+                hasBeenToggled = true;
             }
+        } else {
+            hasBeenToggled = false;
         }
     }
 
@@ -66,10 +70,7 @@ public class ModHelpers {
     public static boolean isTaggedAsContainer(BlockState state) {
         var stack = state.getBlock().asItem().getDefaultInstance();
         //? if fabric {
-        return state.is(ConventionalBlockTags.CHESTS) || state.is(BlockTags.GUARDED_BY_PIGLINS)
-                //? if >1.20 {
-                || stack.is(ConventionalItemTags.CHESTS)
-                //?}
+        return state.is(ConventionalBlockTags.CHESTS) || state.is(BlockTags.GUARDED_BY_PIGLINS) || stack.is(ConventionalItemTags.CHESTS)
                 //? if >1.21 {
                 || state.is(ConventionalBlockTags.BARRELS)  || stack.is(ConventionalItemTags.BARRELS)
                 //?}
@@ -145,6 +146,11 @@ public class ModHelpers {
                         return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
                     }
                 }
+                //? if <1.21.11 {
+                else if (Platform.INSTANCE.isLoaded("fastitemframes")) {
+                    return FastItemFramesCompat.passthrough(block, state, blockPos, world, crosshairTarget, player);
+                }
+                //?}
             }
         }
         return crosshairTarget;

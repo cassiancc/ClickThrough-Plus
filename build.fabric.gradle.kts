@@ -76,6 +76,20 @@ repositories {
             includeGroupAndSubgroups("fuzs")
         }
     }
+    maven {
+        name = "Parchment Mappings"
+        url = uri("https://maven.parchmentmc.org")
+        content {
+            includeGroupAndSubgroups("org.parchmentmc")
+        }
+    }
+    maven {
+        name = "Gegy"
+        url = uri("https://maven.gegy.dev/releases/")
+        content {
+            includeGroupAndSubgroups("dev.lambdaurora")
+        }
+    }
 }
 
 dependencies {
@@ -108,6 +122,7 @@ dependencies {
     // Cloth Config
     if (hasProperty("deps.cloth_version")) {
         modApi("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth_version")}")
+        modRuntimeOnly("maven.modrinth:mcqoy:fjAChf8J")
     } else {
         modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:19.0.147")
     }

@@ -39,22 +39,16 @@ public class ClickThrough
             CATEGORY
     );
 
-    public static void setActive() {
+    public static void setActive(boolean active) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            player.displayClientMessage(Component.translatable("clickthrough.msg.active"), false);
+            if (active) {
+                player.displayClientMessage(Component.translatable("clickthrough.msg.active"), ClickThrough.CONFIG.displayActiveTextAsTitle);
+            } else {
+                player.displayClientMessage(Component.translatable("clickthrough.msg.inactive"), ClickThrough.CONFIG.displayActiveTextAsTitle);
+            }
         }
-        CONFIG.isActive = true;
+        CONFIG.isActive = active;
     }
-
-    public static void setInActive() {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
-            player.displayClientMessage(Component.translatable("clickthrough.msg.inactive"), false);
-        }
-        CONFIG.isActive = false;
-    }
-
-
 
 }

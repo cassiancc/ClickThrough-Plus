@@ -126,7 +126,7 @@ dependencies {
     }
 
     // Fast Item Frames
-    if (stonecutter.eval(mcVersion, ">1.20.1")) {
+    if (stonecutter.eval(mcVersion, ">1.20.1") && stonecutter.eval(mcVersion, "<1.21.11")) {
         compileOnly("maven.modrinth:fast-item-frames:${mod.dep("fast_item_frames")}")
         compileOnly("maven.modrinth:puzzles-lib:${mod.dep("puzzles_lib")}")
 //        runtimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-neoforge:${mod.dep("forge_config_api_port")}")

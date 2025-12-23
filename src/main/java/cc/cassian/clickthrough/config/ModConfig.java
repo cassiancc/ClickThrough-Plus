@@ -13,6 +13,7 @@ public class ModConfig extends WrappedConfig {
     public boolean isActive = true;
     public boolean onlycontainers = true;
     public boolean sneaktodye = false;
+    public boolean displayActiveTextAsTitle = true;
     public ValueList<String> containers = ValueList.create("minecraft:ender_chest", "minecraft:vault", "minecraft:composter", "minecraft:respawn_anchor", "minecraft:jukebox", "minecraft:decorated_pot", "minecraft:chiseled_bookshelf", "minecraft:beacon", "minecraft:stonecutter", "minecraft:grindstone", "minecraft:crafting_table");
 
 
