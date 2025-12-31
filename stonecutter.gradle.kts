@@ -3,12 +3,12 @@ plugins {
     id("co.uzzu.dotenv.gradle") version "4.0.0"
     id("net.fabricmc.fabric-loom-remap") version "1.14-SNAPSHOT" apply false
     id("net.fabricmc.fabric-loom") version "1.14-SNAPSHOT" apply false
-    id("net.neoforged.moddev") version "2.0.134" apply false
+    id("net.neoforged.moddev") version "2.0.136" apply false
     id ("dev.kikugie.postprocess.jsonlang") version "2.1-beta.4" apply false
     id("me.modmuss50.mod-publish-plugin") version "0.8.+" apply false
 }
 
-stonecutter active "1.21.11-fabric"
+stonecutter active "26.1-fabric"
 
 stonecutter parameters {
     constants.match(node.metadata.project.substringAfterLast('-'), "fabric", "neoforge")

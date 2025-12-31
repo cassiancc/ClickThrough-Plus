@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [3.6.2]
+
+### Changed
+- Active state is now displayed in the title bar. This can be reverted in the config.
+
+### Fixed
+- Active state is no longer switched repeatedly when the toggle button is held.
+
 ## [3.6.1] - 2025-12-17
 
 ### Added

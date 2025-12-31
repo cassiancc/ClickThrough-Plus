@@ -1,5 +1,2 @@
-### Changed
-- Active state is now displayed in the title bar. This can be reverted in the config.
-
-### Fixed
-- Active state is no longer switched repeatedly when the toggle button is held.
+### Added
+- Support for Fabric API 0.140.3 and NeoForge 26.1.

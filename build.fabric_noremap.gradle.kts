@@ -171,9 +171,7 @@ publishMods {
         minecraftVersions.add(property("deps.minecraft").toString())
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
-        optional("cloth-config")
-        optional("jade")
-        optional("modmenu")
+        optional("mcqoy")
     }
 
     curseforge {

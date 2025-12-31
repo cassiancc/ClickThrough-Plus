@@ -9,7 +9,7 @@ import cc.cassian.clickthrough.helpers.ModHelpers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+
 
 import static cc.cassian.clickthrough.ClickThrough.*;
 import static cc.cassian.clickthrough.ClickThrough.setActive;
@@ -21,7 +21,11 @@ public final class ClickthroughFabric implements ClientModInitializer {
         // This entrypoint is suitable for setting up client-specific logic, such as rendering.
         ClickThrough.init();
         ClientLifecycleEvents.CLIENT_STARTED.register((minecraftClient -> ModLists.loadLists()));
-        KeyBindingHelper.registerKeyBinding(onoff);
+        //? if >26 {
+        net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(onoff);
+        //?} else {
+        /*net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper.registerKeyBinding(onoff);
+        *///?}
         ClientTickEvents.END_CLIENT_TICK.register(ModHelpers::handleKeybind);
     }
 
