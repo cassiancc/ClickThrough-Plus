@@ -7,6 +7,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,12 +19,7 @@ public class ClickThrough
     static public final String MOD_NAME = "ClickThrough";
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
     public static final ModConfig CONFIG = ModConfig.createToml(Platform.INSTANCE.configPath(), "", ClickThrough.MOD_ID, ModConfig.class);
-
-    //? if >1.21.8 {
     public static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("clickthrough", "keybinds")); // The category translation key used to categorize in the Controls screen
-    //?} else {
-    /*public static final String CATEGORY = "key.category.clickthrough.keybinds";
-     *///?}
 
     public static void init() {
 
@@ -42,10 +38,11 @@ public class ClickThrough
     public static void setActive(boolean active) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null) {
-            if (active) {
-                player.displayClientMessage(Component.translatable("clickthrough.msg.active"), ClickThrough.CONFIG.displayActiveTextAsTitle);
+            var translatable = active ? Component.translatable("clickthrough.msg.active") : Component.translatable("clickthrough.msg.inactive");
+            if (ClickThrough.CONFIG.displayActiveTextAsTitle) {
+                player.sendOverlayMessage(translatable);
             } else {
-                player.displayClientMessage(Component.translatable("clickthrough.msg.inactive"), ClickThrough.CONFIG.displayActiveTextAsTitle);
+                player.sendSystemMessage(translatable);
             }
         }
         CONFIG.isActive = active;
