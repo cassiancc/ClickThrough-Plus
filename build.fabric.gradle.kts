@@ -105,6 +105,16 @@ dependencies {
     include("folk.sisby:kaleido-config:${property("deps.kaleido")}")
 
     compileOnly("me.shedaniel.cloth:cloth-config-fabric:${property("deps.cloth")}")
+    compileOnly("maven.modrinth:fast-item-frames:26.1.0-fabric")
+    if (hasProperty("deps.puzzles_lib")) {
+        compileOnly("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+        localRuntime("maven.modrinth:puzzles-lib:${property("deps.puzzles_lib")}")
+    }  else {
+        compileOnly("maven.modrinth:puzzles-lib:3OADGa7L")
+    }
+    if (hasProperty("deps.forge_config_api_port")) {
+        localRuntime("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${property("deps.forge_config_api_port")}")
+    }
 
 }
 
@@ -174,7 +184,7 @@ publishMods {
     curseforge {
         projectId = property("publish.curseforge") as String
         accessToken = env.CURSEFORGE_API_KEY.orNull()
-        minecraftVersions.add(stonecutter.current.version)
+        minecraftVersions.add(property("deps.minecraft").toString())
         minecraftVersions.addAll(additionalVersions)
         requires("fabric-api")
     }

@@ -1,10 +1,8 @@
 package cc.cassian.clickthrough.compat;
 
-//? if <1.21.11 {
-
-/*import cc.cassian.clickthrough.helpers.ModHelpers;
-import fuzs.fastitemframes.world.level.block.ItemFrameBlock;
-import fuzs.fastitemframes.world.level.block.entity.ItemFrameBlockEntity;
+import cc.cassian.clickthrough.helpers.ModHelpers;
+import fuzs.fastitemframes.common.world.level.block.ItemFrameBlock;
+import fuzs.fastitemframes.common.world.level.block.entity.ItemFrameBlockEntity;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -34,4 +32,3 @@ public class FastItemFramesCompat {
 		return crosshairTarget;
 	}
 }
-*///?}

@@ -5,6 +5,7 @@ import cc.cassian.clickthrough.Platform;
 //? if <1.21.11 {
 /*import cc.cassian.clickthrough.compat.FastItemFramesCompat;
 *///?}
+import cc.cassian.clickthrough.compat.FastItemFramesCompat;
 import cc.cassian.clickthrough.config.ModLists;
 //? if fabric && >1.21 {
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -101,13 +102,7 @@ public class ModHelpers {
         if (crosshairTarget != null) {
             if (crosshairTarget.getType() == HitResult.Type.ENTITY && ((EntityHitResult) crosshairTarget).getEntity() instanceof ItemFrame itemFrame) {
                 // copied from AbstractDecorationEntity#canStayAttached
-                BlockPos attachedPos = itemFrame
-                        //? if >1.21 {
-                        .getPos()
-                        //?} else {
-                        /*.getOnPos()
-                         *///?}
-                        .offset(getOpposite(itemFrame.getDirection()));
+                BlockPos attachedPos = itemFrame.getPos().offset(getOpposite(itemFrame.getDirection()));
                 // System.out.println("Item frame attached to "+state.getBlock().getTranslationKey()+" at "+blockPos.toShortString());
                 if (!player.isShiftKeyDown() && isClickableBlockAt(attachedPos, world)) {
                     return new BlockHitResult(crosshairTarget.getLocation(), itemFrame.getDirection(), attachedPos, false);
@@ -146,23 +141,16 @@ public class ModHelpers {
                         return new BlockHitResult(crosshairTarget.getLocation(), blockHitResult.getDirection(), attachedPos, false);
                     }
                 }
-                //? if <1.21.11 {
-                /*else if (Platform.INSTANCE.isLoaded("fastitemframes")) {
+                else if (Platform.INSTANCE.isLoaded("fastitemframes")) {
                     return FastItemFramesCompat.passthrough(block, state, blockPos, world, crosshairTarget, player);
                 }
-                *///?}
             }
         }
         return crosshairTarget;
     }
 
     public static Vec3i getOpposite(Direction direction) {
-        return direction.getOpposite().
-                //? if >1.21.2 {
-                getUnitVec3i()
-                //?} else {
-                /*getNormal()
-                 *///?}
+        return direction.getOpposite().getUnitVec3i()
         ;
     }
 }
